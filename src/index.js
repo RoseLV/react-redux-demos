@@ -1,17 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {createStore} from 'redux';
+import Counter from './Counter.jsx'
+import reducer from './reducer.js'
+// 1. 引入Provider
+import { Provider } from "react-redux";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+let store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__())
+/**
+ * sandbox 地址 没有用react-redux，只用了redux
+ * https://codesandbox.io/s/github/reduxjs/redux/tree/master/examples/counter?file=/public/index.html
+ */
+export default function App() {
+  const rootEl = document.getElementById('root')
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  const render = () => ReactDOM.render(
+    // 1. 添加Provider包裹react component
+    <Provider store={store}>
+      <Counter />
+    </Provider>,
+    rootEl
+  )
+  render()
+  // store.subscribe(render)
+}
+App()
